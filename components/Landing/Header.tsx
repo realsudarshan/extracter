@@ -9,7 +9,7 @@ function Header() {
     <div >
       <Link href="/" className='flex justify-center items-center'>
         <Shield className='w-6 h-6 text-black mr-6 bg-red' />
-        <h1 className='text-xl font-semibold '>Extractor</h1>
+        <h1 className='text-xl font-semibold p-8 '>Extractor</h1>
         </Link>
     </div>
            <div>

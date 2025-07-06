@@ -8,6 +8,7 @@ import Hero from '@/components/Landing/Hero';
 import Pricing from '@/components/Landing/Pricing';
 import Footer from '@/components/Landing/Footer';
 import Feature from '@/components/Landing/Feature';
+import PricingSection from '@/components/Landing/PricingSwitch';
 export default function Home() {
   return (
     <>
@@ -16,7 +17,7 @@ export default function Home() {
      </div>
      <Hero/>
      <Feature/>
-     <Pricing/>
+     <PricingSection/>
      <Footer/>
 
 
