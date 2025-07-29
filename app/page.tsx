@@ -12,9 +12,7 @@ import PricingSection from '@/components/Landing/PricingSwitch';
 export default function Home() {
   return (
     <>
-    <div className='flex flex-row justify-between px-8'>
-     <Header/>
-     </div>
+    
      <Hero/>
      <Feature/>
      <PricingSection/>

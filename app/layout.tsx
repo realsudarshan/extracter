@@ -33,6 +33,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ClerkProvider dynamic>
+          
           <ConvexClientProvider>{children}</ConvexClientProvider>
         </ClerkProvider>
       </body>

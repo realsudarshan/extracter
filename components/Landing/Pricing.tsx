@@ -37,14 +37,14 @@ if(isSignedIn){
 switch(plan){
   case "free":
     
-    window.location.href="/";
+    window.location.href="/manage-plan";
     break;
 
 case "basic":
-   window.location.href="/";
+   window.location.href="/manage-plan";
    break;
 case "pro":
-   window.location.href="/";
+   window.location.href="/manage-plan";
    break;
    default:
     break;
