@@ -1,5 +1,6 @@
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import convex from "@/lib/convexClient";
 import { client } from "@/lib/schematic";
 import { AnyZodType, createAgent, createTool, gemini } from "@inngest/agent-kit";
 import { useMutation } from "convex/react";
@@ -61,9 +62,9 @@ handler: async (params, context) => {
     async()=>{
 try {
     // Call the Convex mutation to update the receipt with extracted data
-const updateReceiptWithExtractData=  useMutation(
-  api.recipts.updateReceiptWithExtractData)
-  const {userId}=await updateReceiptWithExtractData({
+const {userId}=  await convex.mutation(
+  api.recipts.updateReceiptWithExtractData,
+  {
     id: receiptId as Id<"recipts">,
     fileDisplayName,
     merchantName,

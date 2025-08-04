@@ -17,7 +17,8 @@ import { getFileDownloadUrl } from "@/app/actions/getFileDownloadUrl"
 import { inngest } from "@/inngest/client"
 import events from "@/inngest/constants"
 import { sendInngestEvent } from "@/lib/inngestEventSend"
-
+import { useRouter } from "next/navigation"
+import axios from "axios"
 // Create some dummy initial files
 
 
@@ -31,7 +32,7 @@ export default function CustomDropzone({landingpage,dashboard=false}:any) {
     const generateUploadUrl = useMutation(api.recipts.generateUploadUrl);
   const storeReciepts = useMutation(api.recipts.storeReciepts);
   //to upload file if file is uploaded
- 
+ const router=useRouter()
   
 
   const [
@@ -79,13 +80,18 @@ export default function CustomDropzone({landingpage,dashboard=false}:any) {
       setUploadSuccess(true)
       //generate file url
       const fileurl=await getFileDownloadUrl(storageId)
-     await sendInngestEvent({ url: fileurl.downloadUrl, receiptId })
-
+      console.log("The data is",fileurl.downloadUrl,receiptId)
+ const response = await axios.post("/api/trigger-inngest", {
+        url:fileurl.downloadUrl,
+        receiptId,
+      });
+    // const resullt= await sendInngestEvent({ url: fileurl.downloadUrl, receiptId })
+console.log(result);
       removeFile(file)
     } catch (error: any) {
       setUploadError(error.message)
     } finally {
-      if(dashboard) window.location.href="/dashboard"
+      if(dashboard) router.push("/dashboard")
       setUploading(false)
     }
   }
