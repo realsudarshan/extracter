@@ -4,7 +4,7 @@ import convex from "@/lib/convexClient";
 import { client } from "@/lib/schematic";
 import { AnyZodType, createAgent, createTool, gemini } from "@inngest/agent-kit";
 import { useMutation } from "convex/react";
-import {z} from "zod"
+import {z, ZodType} from "zod"
 const saveToDatabaseTool=createTool({
     name:"save-to-database",
     description:"Saves the given data to convex database",
@@ -43,7 +43,7 @@ items: z.array(
   }).describe(
     "An array of items on the receipt. Include the name, quantity, unit price, and total price of each item.",
   )
-)}) ,
+)}) as any,
 handler: async (params, context) => {
   const {
     receiptId,

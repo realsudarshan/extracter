@@ -1,76 +1,96 @@
-import { createTool,createAgent } from "@inngest/agent-kit";
-import { gemini } from "inngest";
+import { createTool, createAgent, gemini } from "@inngest/agent-kit";
+import { z } from "zod";
 
-import z from "zod";
+
 const parsePdfTool = createTool({
   name: "parse-pdf",
-  description: "Analyze the given PDF",
+  description: "Analyze the given PDF or image",
   parameters: z.object({
     pdfUrl: z.string(),
-  }),
+  }) ,
   handler: async ({ pdfUrl }, { step }) => {
-   try {
-     return await step?.ai.infer("parse-pdf", {
-       model: gemini({
-         model: "gemini-2.0-flash-lite",
-         defaultParameters: {
-           generationConfig: {
-             maxOutputTokens: 1000,
-           },
-         },
-       }),
-       body: {
-         messages: [{
-             role:"user",
-             content:[{
-                 type:document,
-                 source:{
-                     type:"url",
-                     url:pdfUrl,
-                 }
-             },
-         {
-   type: "text",
-   text: `Extract the data from the receipt and return the structured output as follows:
- 
- {
-   "merchant": {
-     "name": "Store Name",
-     "address": "123 Main St, City, Country",
-     "contact": "+123456789"
-   },
-   "transaction": {
-     "date": "YYYY-MM-DD",
-     "receipt_number": "ABC123456",
-     "payment_method": "Credit Card"
-   },
-   "items": [
-     {
-       "name": "Item 1",
-       "quantity": 2,
-       "unit_price": 10.00,
-       "total_price": 20.00
-     }
-   ],
-   "totals": {
-     "subtotal": 20.00,
-     "tax": 2.00,
-     "total": 22.00,
-     "currency": "USD"
-   }
- }`
- }
- 
-         ]
-         },
-     
-     ],
-       },
-     });
-   } catch (error) {
-    throw error instanceof Error?error.message:"parsePDf error"
-    
-   }
+    try {
+      // Download and convert Convex file to base64
+      const response = await fetch(pdfUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch file: ${response.statusText}`);
+      }
+      
+      // Check file size (Gemini has limits - typically 20MB for inline data)
+      const contentLength = response.headers.get('content-length');
+      if (contentLength && parseInt(contentLength) > 20 * 1024 * 1024) {
+        throw new Error('File too large for inline processing (max 20MB)');
+      }
+      
+      const arrayBuffer = await response.arrayBuffer();
+      const base64Data = Buffer.from(arrayBuffer).toString('base64');
+      
+      // Determine MIME type from response headers or URL extension
+      let contentType = response.headers.get('content-type');
+      if (!contentType) {
+        // Fallback: guess from URL extension
+        const url = new URL(pdfUrl);
+        const extension = url.pathname.split('.').pop()?.toLowerCase();
+        switch (extension) {
+          case 'pdf': contentType = 'application/pdf'; break;
+          case 'jpg': case 'jpeg': contentType = 'image/jpeg'; break;
+          case 'png': contentType = 'image/png'; break;
+          case 'webp': contentType = 'image/webp'; break;
+          default: contentType = 'application/pdf'; // Default assumption
+        }
+      }
+      
+      return await step?.ai.infer("parse-pdf", {
+        model: step.ai.models.gemini({ model: "gemini-2.0-flash-lite" }),
+        body: {
+          contents: [{
+            parts: [
+              {
+                inlineData: {
+                  mimeType: contentType,
+                  data: base64Data
+                }
+              },
+              {
+                text: `Extract the data from the receipt and return the structured output as follows:
+
+{
+  "merchant": {
+    "name": "Store Name",
+    "address": "123 Main St, City, Country",
+    "contact": "+123456789"
+  },
+  "transaction": {
+    "date": "YYYY-MM-DD",
+    "receipt_number": "ABC123456",
+    "payment_method": "Credit Card"
+  },
+  "items": [
+    {
+      "name": "Item 1",
+      "quantity": 2,
+      "unit_price": 10.00,
+      "total_price": 20.00
+    }
+  ],
+  "totals": {
+    "subtotal": 20.00,
+    "tax": 2.00,
+    "total": 22.00,
+    "currency": "USD"
+  }
+}`
+              }
+            ]
+          }],
+          generationConfig: {
+            maxOutputTokens: 1000,
+          }
+        },
+      });
+    } catch (error) {
+      throw error instanceof Error ? error : new Error("parsePdf error");
+    }
   },
 });
 
@@ -90,14 +110,14 @@ export const receiptScanningAgent = createAgent({
   - Handle multiple formats, languages, and varying receipt layouts efficiently.
   - Maintain a structured JSON output for easy integration with databases or expense tracking systems.
   `,
-  system:"You are helpful assistant that process reciept images and PDF and extract key deatils ",
-  model:gemini({
-            model:"gemini-2.0-flash-lite",
-            defaultParameters:{
-                generationConfig:{
-                    maxOutputTokens:1000,
-                }
-            }
-        }),
+  system: "You are a helpful assistant that processes receipt images and PDFs and extracts key details.",
+  model: gemini({
+    model: "gemini-2.0-flash-lite",
+    defaultParameters: {
+      generationConfig: {
+        maxOutputTokens: 1000,
+      }
+    }
+  }),
   tools: [parsePdfTool],
 });
