@@ -43,7 +43,7 @@ items: z.array(
   }).describe(
     "An array of items on the receipt. Include the name, quantity, unit price, and total price of each item.",
   )
-)}) as any,
+)}) ,
 handler: async (params, context) => {
   const {
     receiptId,
@@ -61,6 +61,7 @@ handler: async (params, context) => {
     "save-reciept-to-database",
     async()=>{
 try {
+  
     // Call the Convex mutation to update the receipt with extracted data
 const {userId}=  await convex.mutation(
   api.recipts.updateReceiptWithExtractData,
