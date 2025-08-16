@@ -9,6 +9,8 @@ const parsePdfTool = createTool({
     pdfUrl: z.string(),
   }) ,
   handler: async ({ pdfUrl }, { step }) => {
+    console.log("working reciept is scanning")
+    console.log(pdfUrl)
     try {
       // Download and convert Convex file to base64
       const response = await fetch(pdfUrl);

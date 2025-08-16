@@ -45,6 +45,7 @@ items: z.array(
   )
 )}) ,
 handler: async (params, context) => {
+  
   const {
     receiptId,
     fileDisplayName,
@@ -125,7 +126,7 @@ return {
 export const databaseAgent=createAgent({
     name:"Database agent",
     description:"responsible for taking key information regarding receipts and saving it to the convex database",
-    system:"You are helpful assistant that takes key information regarding reciepts and saves it to the convex database",
+    system:"You are helpful assistant that takes key information regarding reciepts and saves it to the convex database.Use saveToDatabaseTool tool to save to database",
     model:gemini({
             model:"gemini-2.0-flash-lite",
             defaultParameters:{
