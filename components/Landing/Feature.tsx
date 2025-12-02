@@ -49,18 +49,18 @@ export default function Feaure() {
   ]
 
   return (
-  <>
-  
-   <div className="p-10 flex-col justify-center items-center gap-10">
-    <h1 className="text-center">Features</h1>
-     {features.map((feature,index)=>(
-      
-      <FeatureCard key={index} icon={feature.icon} title={feature.title} description={feature.description}/>
-      
-     ))}
-   </div>
+    <>
 
-  
-  </>
+      <div id="features" className="p-10 flex-col justify-center items-center gap-10">
+        <h1 className="text-center">Features</h1>
+        {features.map((feature, index) => (
+
+          <FeatureCard key={index} icon={feature.icon} title={feature.title} description={feature.description} />
+
+        ))}
+      </div>
+
+
+    </>
   )
 }
