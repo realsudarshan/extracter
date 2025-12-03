@@ -25,11 +25,7 @@ export default function Feaure() {
       title: "Mobile & Desktop Ready",
       description: "Scan receipts anywhere with our mobile app or upload bulk receipts from your desktop.",
     },
-    {
-      icon: Shield,
-      title: "Bank-Level Security",
-      description: "Your financial data is protected with enterprise-grade encryption and secure cloud storage.",
-    },
+ 
     {
       icon: BarChart3,
       title: "Expense Analytics",
@@ -40,12 +36,7 @@ export default function Feaure() {
       title: "Multi-Format Support",
       description: "Works with photos, PDFs, and scanned images. Supports receipts from any country or language.",
     },
-    {
-      icon: Clock,
-      title: "Real-Time Sync",
-      description:
-        "Instantly sync extracted data across all your devices and integrate with popular accounting software.",
-    },
+    
   ]
 
   return (

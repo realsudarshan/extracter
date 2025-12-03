@@ -1,0 +1,29 @@
+app/actions/getTemporaryAcessToken.ts(19,6): error TS2353: Object literal may only specify known properties, and 'resourceType' does not exist in type 'IssueTemporaryAccessTokenRequestBody'.
+app/server/inner.tsx(9,35): error TS2339: Property 'myFunctions' does not exist on type '{ recipts: { generateUploadUrl: FunctionReference<"mutation", "public", EmptyObject, string, string | undefined>; storeReciepts: FunctionReference<"mutation", "public", { ...; }, string & { ...; }, string | undefined>; ... 5 more ...; updateReceiptWithExtractData: FunctionReference<...>; }; analytics: { ...; }; }'.
+app/server/inner.tsx(12,37): error TS2339: Property 'myFunctions' does not exist on type '{ recipts: { generateUploadUrl: FunctionReference<"mutation", "public", EmptyObject, string, string | undefined>; storeReciepts: FunctionReference<"mutation", "public", { ...; }, string & { ...; }, string | undefined>; ... 5 more ...; updateReceiptWithExtractData: FunctionReference<...>; }; analytics: { ...; }; }'.
+app/server/page.tsx(6,44): error TS2339: Property 'myFunctions' does not exist on type '{ recipts: { generateUploadUrl: FunctionReference<"mutation", "public", EmptyObject, string, string | undefined>; storeReciepts: FunctionReference<"mutation", "public", { ...; }, string & { ...; }, string | undefined>; ... 5 more ...; updateReceiptWithExtractData: FunctionReference<...>; }; analytics: { ...; }; }'.
+components/Analytics/MerchantPieChart.tsx(21,67): error TS18048: 'percent' is possibly 'undefined'.
+components/comp-548.tsx(19,34): error TS2306: File 'D:/codes/convex/reciept-tracker/lib/inngestEventSend.ts' is not a module.
+components/comp-548.tsx(79,9): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(input: string | Request | URL, init?: RequestInit | undefined): Promise<Response>', gave the following error.
+    Type 'FileMetadata | File' is not assignable to type 'BodyInit | null | undefined'.
+      Type 'FileMetadata' is not assignable to type 'BodyInit | null | undefined'.
+        Type 'FileMetadata' is missing the following properties from type 'Blob': arrayBuffer, bytes, slice, stream, text
+  Overload 2 of 2, '(input: URL | RequestInfo, init?: RequestInit | undefined): Promise<Response>', gave the following error.
+    Type 'FileMetadata | File' is not assignable to type 'BodyInit | null | undefined'.
+      Type 'FileMetadata' is not assignable to type 'BodyInit | null | undefined'.
+        Type 'FileMetadata' is missing the following properties from type 'Blob': arrayBuffer, bytes, slice, stream, text
+components/comp-548.tsx(105,18): error TS2345: Argument of type 'FileWithPreview' is not assignable to parameter of type 'string'.
+inngest/agent.ts(34,5): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(requestListener?: RequestListener<typeof IncomingMessage, typeof ServerResponse> | undefined): Server<typeof IncomingMessage, typeof ServerResponse>', gave the following error.
+    Object literal may only specify known properties, and 'agents' does not exist in type 'RequestListener<typeof IncomingMessage, typeof ServerResponse>'.
+  Overload 2 of 2, '(options: ServerOptions<typeof IncomingMessage, typeof ServerResponse>, requestListener?: RequestListener<typeof IncomingMessage, typeof ServerResponse> | undefined): Server<...>', gave the following error.
+    Object literal may only specify known properties, and 'agents' does not exist in type 'ServerOptions<typeof IncomingMessage, typeof ServerResponse>'.
+inngest/agent.ts(56,32): error TS2322: Type '{ id: any; }' is not assignable to type 'string'.
+inngest/agent.ts(57,29): error TS2322: Type '{ id: any; }' is not assignable to type 'string'.
+inngest/agent.ts(63,32): error TS2322: Type '{ id: any; }' is not assignable to type 'string'.
+inngest/agent.ts(64,29): error TS2322: Type '{ id: any; }' is not assignable to type 'string'.
+inngest/agent.ts(71,36): error TS2322: Type '{ id: any; }' is not assignable to type 'string'.
+inngest/agent.ts(72,33): error TS2322: Type '{ id: any; }' is not assignable to type 'string'.
+next.config.ts(3,11): error TS7006: Parameter 'config' implicitly has an 'any' type.
+next.config.ts(3,21): error TS7031: Binding element 'dev' implicitly has an 'any' type.

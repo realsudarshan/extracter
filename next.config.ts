@@ -1,11 +1,13 @@
 // next.config.js
-const nextConfig = {
-  webpack(config, { dev }) {
-    if (dev) {
-      config.devtool = 'source-map'; // Better than 'eval' for debugging
-    }
-    return config;
-  },
+const nextConfig = (phase: string, { defaultConfig }: { defaultConfig: any }) => {
+  return {
+    webpack(config: any, { dev }: { dev: boolean }) {
+      if (dev) {
+        config.devtool = 'source-map'; // Better than 'eval' for debugging
+      }
+      return config;
+    },
+  };
 };
 
 module.exports = nextConfig;

@@ -30,10 +30,10 @@ const agentNetwork = createNetwork({
 
 })
 
-export const server = createServer({
-    agents: [databaseAgent, receiptScanningAgent],
-    network: [agentNetwork]
-});
+// export const server = createServer({
+//     agents: [databaseAgent, receiptScanningAgent],
+//     network: [agentNetwork]
+// });
 
 export const extractAndSavePDF = inngest.createFunction(
     { id: "Extract PDF and Save in Database" },
@@ -53,23 +53,23 @@ export const extractAndSavePDF = inngest.createFunction(
             try {
                 await client.track({
                     event: "scans",
-                    company: { keys: { id: userId } },
-                    user: { keys: { id: userId } },
+                    company: { id: userId as string },
+                    user: { id: userId as string },
                 });
                 console.log("✅ Tracked scan event in Schematic for user:", userId);
 
                 // Check AI Summary Entitlement (Pro tier only)
                 const summaryAccess = await client.features.checkFlag("ai-summaries", {
-                    company: { keys: { id: userId } },
-                    user: { keys: { id: userId } },
+                    company: { id: userId as string },
+                    user: { id: userId as string },
                 });
 
                 if (summaryAccess.data?.value) {
                     // Track AI summary usage
                     await client.track({
                         event: "ai-summaries",
-                        company: { keys: { id: userId } },
-                        user: { keys: { id: userId } },
+                        company: { id: userId as string },
+                        user: { id: userId as string },
                     });
                     console.log("✅ Tracked AI summary event in Schematic for user:", userId);
                 }

@@ -16,7 +16,7 @@ import Link from "next/link"
 import { getFileDownloadUrl } from "@/app/actions/getFileDownloadUrl"
 import { inngest } from "@/inngest/client"
 import events from "@/inngest/constants"
-import { sendInngestEvent } from "@/lib/inngestEventSend"
+
 import { useRouter } from "next/navigation"
 import axios from "axios"
 import { useSchematicEntitlement } from "@schematichq/schematic-react"
@@ -73,36 +73,38 @@ export default function CustomDropzone({ landingpage, dashboard = false }: any) 
     setUploadError("")
     try {
       const postUrl = await generateUploadUrl()
-      const result = await fetch(postUrl, {
-        method: "POST",
-        headers: { "Content-Type": file.file.type },
-        body: file.file,
-      })
+      if (file.file instanceof File) {
+        const result = await fetch(postUrl, {
+          method: "POST",
+          headers: { "Content-Type": file.file.type },
+          body: file.file,
+        })
 
-      if (!result.ok) {
-        const err = await result.json()
-        throw new Error(`Upload failed: ${JSON.stringify(err)}`)
+        if (!result.ok) {
+          const err = await result.json()
+          throw new Error(`Upload failed: ${JSON.stringify(err)}`)
+        }
+
+        const { storageId } = await result.json()
+        const receiptId = await storeReciepts({
+          userId: user.id,
+          fileId: storageId,
+          fileName: file.file.name,
+          size: file.file.size,
+          mimeType: file.file.type
+        })
+        setUploadSuccess(true)
+        //generate file url
+        const fileurl = await getFileDownloadUrl(storageId)
+        console.log("The data is", fileurl.downloadUrl, receiptId)
+        const response = await axios.post("/api/trigger-inngest", {
+          url: fileurl.downloadUrl,
+          receiptId,
+        });
+        // const resullt= await sendInngestEvent({ url: fileurl.downloadUrl, receiptId })
+        console.log(result);
+        removeFile(file.id)
       }
-
-      const { storageId } = await result.json()
-      const receiptId = await storeReciepts({
-        userId: user.id,
-        fileId: storageId,
-        fileName: file.file.name,
-        size: file.file.size,
-        mimeType: file.file.type
-      })
-      setUploadSuccess(true)
-      //generate file url
-      const fileurl = await getFileDownloadUrl(storageId)
-      console.log("The data is", fileurl.downloadUrl, receiptId)
-      const response = await axios.post("/api/trigger-inngest", {
-        url: fileurl.downloadUrl,
-        receiptId,
-      });
-      // const resullt= await sendInngestEvent({ url: fileurl.downloadUrl, receiptId })
-      console.log(result);
-      removeFile(file)
     } catch (error: any) {
       setUploadError(error.message)
     } finally {
