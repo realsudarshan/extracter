@@ -1,15 +1,17 @@
+"use client"
+
 import CustomDropzone from '@/components/comp-548'
 import ReciptList from '@/components/Dashboard/ReciptList'
-import { useSchematicEntitlement } from '@schematichq/schematic-react';
+import CreditDisplay from '@/components/Dashboard/CreditDisplay'
 import React from 'react'
 
 function Dashboard() {
 
   return (
     <>
-    
-    <CustomDropzone landingpage={false} dashboard={true} />
-    <ReciptList/>
+      <CreditDisplay />
+      <CustomDropzone landingpage={false} dashboard={true} />
+      <ReciptList />
     </>
   )
 }

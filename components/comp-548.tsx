@@ -38,7 +38,8 @@ export default function CustomDropzone({ landingpage, dashboard = false }: any) 
     value: isFeatureEnabled,
     featureUsageExceeded,
     featureAllocation,
-  } = useSchematicEntitlement("scans");
+    featureUsage,
+  } = useSchematicEntitlement("scans") as any;
   console.log("The feature is enabled", isFeatureEnabled, "  featureUsageExceeded", featureUsageExceeded, "featureAllocation", featureAllocation);
 
 
@@ -148,7 +149,7 @@ export default function CustomDropzone({ landingpage, dashboard = false }: any) 
             </p>
             {featureAllocation !== undefined && (
               <p className="text-muted-foreground text-xs mt-1">
-                {featureUsageExceeded ? "Limit reached" : `${featureAllocation} scans available`}
+                {featureUsageExceeded ? "Limit reached" : `${Math.max(0, featureAllocation - (featureUsage || 0))} scans remaining`}
               </p>
             )}
           </div>
