@@ -13,19 +13,20 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { 
-  Download, 
-  Trash2, 
-  FileText, 
-  Calendar, 
-  MapPin, 
-  Phone, 
+import {
+  Download,
+  Trash2,
+  FileText,
+  Calendar,
+  MapPin,
+  Phone,
   DollarSign,
   ArrowLeft,
   ExternalLink
 } from 'lucide-react'
 import { getFileDownloadUrl } from '@/app/actions/getFileDownloadUrl'
 import { formatBytes } from '@/hooks/use-file-upload'
+import AISummary from '@/components/Receipt/AISummary'
 
 function Receipt() {
   const params = useParams<{ id: string }>()
@@ -157,13 +158,12 @@ function Receipt() {
             </div>
             <div>
               <span className="text-gray-500">Status:</span>
-              <span className={`ml-2 px-2 py-1 rounded-full text-xs font-medium ${
-                receipt.status === 'pending' 
-                  ? 'bg-yellow-100 text-yellow-600' 
-                  : receipt.status === 'proceed'
+              <span className={`ml-2 px-2 py-1 rounded-full text-xs font-medium ${receipt.status === 'pending'
+                ? 'bg-yellow-100 text-yellow-600'
+                : receipt.status === 'proceed'
                   ? 'bg-green-100 text-green-600'
                   : 'bg-red-100 text-red-800'
-              }`}>
+                }`}>
                 {receipt.status.charAt(0).toUpperCase() + receipt.status.slice(1)}
               </span>
             </div>
@@ -272,18 +272,11 @@ function Receipt() {
             </Card>
           )}
 
-          {/* Receipt Summary */}
+          {/* AI Summary - Pro tier feature */}
           {receipt.reciptSummary && (
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle>Summary</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-                  {receipt.reciptSummary}
-                </p>
-              </CardContent>
-            </Card>
+            <div className="mb-6">
+              <AISummary summary={receipt.reciptSummary} />
+            </div>
           )}
         </>
       )}

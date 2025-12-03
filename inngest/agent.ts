@@ -57,8 +57,24 @@ export const extractAndSavePDF = inngest.createFunction(
                     user: { keys: { id: userId } },
                 });
                 console.log("✅ Tracked scan event in Schematic for user:", userId);
+
+                // Check AI Summary Entitlement (Pro tier only)
+                const summaryAccess = await client.features.checkFlag("ai-summaries", {
+                    company: { keys: { id: userId } },
+                    user: { keys: { id: userId } },
+                });
+
+                if (summaryAccess.data?.value) {
+                    // Track AI summary usage
+                    await client.track({
+                        event: "ai-summaries",
+                        company: { keys: { id: userId } },
+                        user: { keys: { id: userId } },
+                    });
+                    console.log("✅ Tracked AI summary event in Schematic for user:", userId);
+                }
             } catch (error) {
-                console.error("Failed to track scan event:", error);
+                console.error("Failed to track events in Schematic:", error);
             }
         }
 
