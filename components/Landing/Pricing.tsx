@@ -3,24 +3,14 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { useUser } from "@clerk/clerk-react";
-import { CheckIcon, MinusIcon, Scan, Bot } from "lucide-react";
-import React from "react";
+import { Bot, Scan } from "lucide-react";
 import { toast } from "sonner";
 
 
@@ -141,8 +131,8 @@ export default function Pricing({ isAnnual, onToggle }: {
                 </li>
               </ul>
             </CardContent>
-              <CardFooter>
-              <Button className="w-full"  variant={"outline"} onClick={() => handleClick('free')}>
+            <CardFooter>
+              <Button className="w-full" variant={"outline"} onClick={() => handleClick('free')}>
                 {getButtonText("free") || "Get free"}
               </Button>
             </CardFooter>

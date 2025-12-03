@@ -1,25 +1,22 @@
 "use client"
 
-import { AlertCircleIcon, PaperclipIcon, UploadIcon, XIcon } from "lucide-react"
+import { AlertCircleIcon, UploadIcon } from "lucide-react"
 
-import {
-  FileMetadata,
-  formatBytes,
-  useFileUpload,
-} from "@/hooks/use-file-upload"
-import { Button } from "@/components/ui/button"
-import { useEffect, useState } from "react"
-import { RedirectToSignUp, SignUp, useUser } from "@clerk/nextjs"
-import { useMutation } from "convex/react"
-import { api } from "@/convex/_generated/api"
-import Link from "next/link"
 import { getFileDownloadUrl } from "@/app/actions/getFileDownloadUrl"
-import { inngest } from "@/inngest/client"
-import events from "@/inngest/constants"
+import { Button } from "@/components/ui/button"
+import { api } from "@/convex/_generated/api"
+import {
+  formatBytes,
+  useFileUpload
+} from "@/hooks/use-file-upload"
+import { RedirectToSignUp, useUser } from "@clerk/nextjs"
+import { useMutation } from "convex/react"
+import Link from "next/link"
+import { useEffect, useState } from "react"
 
-import { useRouter } from "next/navigation"
-import axios from "axios"
 import { useSchematicEntitlement } from "@schematichq/schematic-react"
+import axios from "axios"
+import { useRouter } from "next/navigation"
 // Create some dummy initial files
 
 

@@ -1,32 +1,31 @@
 "use client"
-import { useParams, useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
-import { useQuery, useMutation } from 'convex/react'
-import { api } from '@/convex/_generated/api'
-import { Id } from '@/convex/_generated/dataModel'
+import { getFileDownloadUrl } from '@/app/actions/getFileDownloadUrl'
+import AISummary from '@/components/Receipt/AISummary'
 import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from '@/components/ui/card'
+import { api } from '@/convex/_generated/api'
+import { Id } from '@/convex/_generated/dataModel'
+import { formatBytes } from '@/hooks/use-file-upload'
+import { useMutation, useQuery } from 'convex/react'
 import {
-  Download,
-  Trash2,
-  FileText,
+  ArrowLeft,
   Calendar,
+  DollarSign,
+  Download,
+  ExternalLink,
+  FileText,
   MapPin,
   Phone,
-  DollarSign,
-  ArrowLeft,
-  ExternalLink
+  Trash2
 } from 'lucide-react'
-import { getFileDownloadUrl } from '@/app/actions/getFileDownloadUrl'
-import { formatBytes } from '@/hooks/use-file-upload'
-import AISummary from '@/components/Receipt/AISummary'
+import { useParams, useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 function Receipt() {
   const params = useParams<{ id: string }>()

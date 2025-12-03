@@ -1,15 +1,14 @@
 "use client"
 
-import { useSchematicEntitlement } from "@schematichq/schematic-react"
-import { Scan } from "lucide-react"
+import { useSchematicEntitlement } from "@schematichq/schematic-react";
+import { Scan } from "lucide-react";
 
 export default function CreditDisplay() {
     const {
-        value: isFeatureEnabled,
         featureUsageExceeded,
         featureAllocation,
         featureUsage,
-    } = useSchematicEntitlement("scans") as any;
+    } = useSchematicEntitlement("scans") ;
 
     if (featureAllocation === undefined) {
         return null; // Loading state

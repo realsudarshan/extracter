@@ -1,5 +1,4 @@
 'use server'
-import { ClerkProvider } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 import { SchematicClient } from "@schematichq/schematic-typescript-node";
 const apiKey = process.env.SCHEMATIC_SECRET_KEY;

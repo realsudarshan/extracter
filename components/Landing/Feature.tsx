@@ -1,4 +1,4 @@
-import { Scan, Zap, Brain, FileText, Shield, Smartphone, BarChart3, Clock } from "lucide-react"
+import { BarChart3, Brain, FileText, Scan, Smartphone, Zap } from "lucide-react"
 
 export default function Feature() {
   const features = [

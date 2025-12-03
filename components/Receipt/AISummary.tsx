@@ -1,15 +1,15 @@
 "use client"
 
-import { useSchematicEntitlement } from "@schematichq/schematic-react"
-import { Sparkles, Lock } from "lucide-react"
-import Link from "next/link"
+import { useSchematicEntitlement } from "@schematichq/schematic-react";
+import { Lock, Sparkles } from "lucide-react";
+import Link from "next/link";
 
 interface AISummaryProps {
     summary?: string;
 }
 
 export default function AISummary({ summary }: AISummaryProps) {
-    const { value: hasAccess } = useSchematicEntitlement("ai-summaries") as any;
+    const { value: hasAccess } = useSchematicEntitlement("ai-summaries");
 
     if (!summary) {
         return null; // No summary generated yet
