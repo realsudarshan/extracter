@@ -35,6 +35,7 @@
     "react-dom": "^19.0.0",
     "react-dropzone": "^14.3.8",
     "sonner": "^2.0.6",
+    "svix": "^1.82.0",
     "tailwind-merge": "^3.3.1",
     "zod": "^3.22.3",
     "zustand": "^5.0.6"

@@ -22,18 +22,18 @@ import axios from "axios"
 // Create some dummy initial files
 
 
-export default function CustomDropzone({landingpage,dashboard=false}:any) {
-  const[showSignup,setShowSignup]=useState(false)
-     const { user } = useUser()
+export default function CustomDropzone({ landingpage, dashboard = false }: any) {
+  const [showSignup, setShowSignup] = useState(false)
+  const { user } = useUser()
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState("")
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const maxSize = 10 * 1024 * 1024 // 10MB default
-    const generateUploadUrl = useMutation(api.recipts.generateUploadUrl);
+  const generateUploadUrl = useMutation(api.recipts.generateUploadUrl);
   const storeReciepts = useMutation(api.recipts.storeReciepts);
   //to upload file if file is uploaded
- const router=useRouter()
-  
+  const router = useRouter()
+
 
   const [
     { files, isDragging, errors },
@@ -48,11 +48,11 @@ export default function CustomDropzone({landingpage,dashboard=false}:any) {
     },
   ] = useFileUpload({
     maxSize,
-    
+
   })
 
   const file = files[0]
- const handleUpload = async () => {
+  const handleUpload = async () => {
     if (!file || !user) return
     setUploading(true)
     setUploadError("")
@@ -70,32 +70,32 @@ export default function CustomDropzone({landingpage,dashboard=false}:any) {
       }
 
       const { storageId } = await result.json()
-      const receiptId=await storeReciepts({ 
-        userId:user.id,
-        fileId:storageId,
-        fileName:file.file.name,
-        size:file.file.size,
-        mimeType:file.file.type
-         })
+      const receiptId = await storeReciepts({
+        userId: user.id,
+        fileId: storageId,
+        fileName: file.file.name,
+        size: file.file.size,
+        mimeType: file.file.type
+      })
       setUploadSuccess(true)
       //generate file url
-      const fileurl=await getFileDownloadUrl(storageId)
-      console.log("The data is",fileurl.downloadUrl,receiptId)
- const response = await axios.post("/api/trigger-inngest", {
-        url:fileurl.downloadUrl,
+      const fileurl = await getFileDownloadUrl(storageId)
+      console.log("The data is", fileurl.downloadUrl, receiptId)
+      const response = await axios.post("/api/trigger-inngest", {
+        url: fileurl.downloadUrl,
         receiptId,
       });
-    // const resullt= await sendInngestEvent({ url: fileurl.downloadUrl, receiptId })
-console.log(result);
+      // const resullt= await sendInngestEvent({ url: fileurl.downloadUrl, receiptId })
+      console.log(result);
       removeFile(file)
     } catch (error: any) {
       setUploadError(error.message)
     } finally {
-      if(dashboard) router.push("/dashboard")
+      if (dashboard) router.push("/dashboard")
       setUploading(false)
     }
   }
-   useEffect(() => {
+  useEffect(() => {
     if (file && !landingpage) {
       handleUpload()
     }
@@ -107,11 +107,11 @@ console.log(result);
         {/* Drop area */}
         <div
           role="button"
-          onClick={landingpage?()=>setShowSignup(true):openFileDialog}
-          onDragEnter={landingpage?()=>setShowSignup(true):handleDragEnter}
-          onDragLeave={landingpage?()=>setShowSignup(true):handleDragLeave}
-          onDragOver={landingpage?()=>setShowSignup(true):handleDragOver}
-          onDrop={landingpage?()=>setShowSignup(true):handleDrop}
+          onClick={landingpage ? () => setShowSignup(true) : openFileDialog}
+          onDragEnter={landingpage ? () => setShowSignup(true) : handleDragEnter}
+          onDragLeave={landingpage ? () => setShowSignup(true) : handleDragLeave}
+          onDragOver={landingpage ? () => setShowSignup(true) : handleDragOver}
+          onDrop={landingpage ? () => setShowSignup(true) : handleDrop}
           data-dragging={isDragging || undefined}
           className="border-input  hover:bg-accent/50 data-[dragging=true]:bg-accent/50 has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 flex min-h-60 flex-col items-center justify-center rounded-xl border border-dashed p-4 transition-colors has-disabled:pointer-events-none has-disabled:opacity-50 has-[input:focus]:ring-[3px]"
         >
@@ -143,21 +143,21 @@ console.log(result);
             <span>{errors[0]}</span>
           </div>
         )}
-      
+
         {/* File list */}
         {file && null
-      }
-      {showSignup?<>
-       <RedirectToSignUp />
-      </>:null}
+        }
+        {showSignup ? <>
+          <RedirectToSignUp />
+        </> : null}
       </div>
-        {(!landingpage && !dashboard)   && (<div className="flex justify-center items-center mt-3">
-          <Link href="/dashboard">
-              <Button>Go to Dashboard</Button>
-            </Link>
-        </div>)}
-        
+      {(!landingpage && !dashboard) && (<div className="flex justify-center items-center mt-3">
+        <Link href="/dashboard">
+          <Button>Go to Dashboard</Button>
+        </Link>
+      </div>)}
+
     </div>
-    
+
   )
 }
