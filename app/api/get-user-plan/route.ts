@@ -4,7 +4,7 @@ import { client } from "@/lib/schematic";
 
 export async function GET() {
     try {
-        const user = await currentUser();
+        const   user = await currentUser();
         console.log("The user", user);
         
         if (!user) {

@@ -19,6 +19,7 @@ import events from "@/inngest/constants"
 import { sendInngestEvent } from "@/lib/inngestEventSend"
 import { useRouter } from "next/navigation"
 import axios from "axios"
+import { useSchematicEntitlement } from "@schematichq/schematic-react"
 // Create some dummy initial files
 
 
@@ -33,6 +34,12 @@ export default function CustomDropzone({ landingpage, dashboard = false }: any) 
   const storeReciepts = useMutation(api.recipts.storeReciepts);
   //to upload file if file is uploaded
   const router = useRouter()
+  const {
+    value: isFeatureEnabled,
+    featureUsageExceeded,
+    featureAllocation,
+  } = useSchematicEntitlement("scans");
+  console.log("The feature is enabled", isFeatureEnabled, "  featureUsageExceeded", featureUsageExceeded, "featureAllocation", featureAllocation);
 
 
   const [
@@ -54,6 +61,13 @@ export default function CustomDropzone({ landingpage, dashboard = false }: any) 
   const file = files[0]
   const handleUpload = async () => {
     if (!file || !user) return
+
+    // Check if feature is enabled and not exceeded
+    if (!isFeatureEnabled || featureUsageExceeded) {
+      setUploadError("Scanning limit reached. Please upgrade your plan.");
+      return;
+    }
+
     setUploading(true)
     setUploadError("")
     try {
@@ -119,7 +133,7 @@ export default function CustomDropzone({ landingpage, dashboard = false }: any) 
             {...getInputProps()}
             className="sr-only"
             aria-label="Upload file"
-            disabled={Boolean(file)}
+            disabled={Boolean(file) || !isFeatureEnabled || featureUsageExceeded}
           />
           <div className="flex flex-col items-center justify-center text-center">
             <div
@@ -132,6 +146,11 @@ export default function CustomDropzone({ landingpage, dashboard = false }: any) 
             <p className="text-muted-foreground text-xs">
               Drag & drop or click to browse (max. {formatBytes(maxSize)})
             </p>
+            {featureAllocation !== undefined && (
+              <p className="text-muted-foreground text-xs mt-1">
+                {featureUsageExceeded ? "Limit reached" : `${featureAllocation} scans available`}
+              </p>
+            )}
           </div>
         </div>
         {errors.length > 0 && (
