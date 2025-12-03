@@ -15,10 +15,10 @@ function Header() {
   useEffect(() => {
     const fetchPlan = async () => {
       if (!user?.id) {
-        setLoading(false);
         return;
       }
 
+      setLoading(true);
       try {
         const response = await fetch('/api/get-user-plan');
         if (response.ok) {
@@ -32,7 +32,9 @@ function Header() {
       }
     };
 
-    fetchPlan();
+    if (user?.id) {
+      fetchPlan();
+    }
   }, [user?.id]);
 
   const scrollToSection = (sectionId: string) => {
@@ -82,7 +84,11 @@ function Header() {
         {/* Auth Buttons - Always Visible */}
         <div className="flex items-center gap-4">
           <SignedIn>
-            {!loading && (
+            {loading ? (
+              <Badge variant="outline" className="hidden sm:inline-flex animate-pulse">
+                Loading...
+              </Badge>
+            ) : (
               <Badge variant={getPlanBadgeVariant(currentPlan)} className="hidden sm:inline-flex">
                 {currentPlan}
               </Badge>

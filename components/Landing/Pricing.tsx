@@ -56,7 +56,7 @@ export default function Pricing({ isAnnual, onToggle }: {
     }
   }
   const getButtonText = (plan: 'free' | 'basic' | 'pro'): string | null => {
-    if (plan === "free") return null;
+    if (plan === "free") return "Get Free";
     if (plan == "basic") return "Purchase"
     if (plan == "pro") return "Purchase"
     return null
@@ -115,10 +115,7 @@ export default function Pricing({ isAnnual, onToggle }: {
                 <CardTitle className="text-xl">Free</CardTitle>
               </div>
               <div className="space-y-2 text-sm text-muted-foreground">
-                <div className="flex justify-between">
-                  <span>Companies:</span>
-                  <span className="text-foreground font-medium">0</span>
-                </div>
+
                 <div className={`flex justify-between items-center ${isAnnual ? 'opacity-50' : 'font-bold'}`}>
                   <span>Monthly Price:</span>
                   <div className="flex items-center gap-1">
@@ -144,8 +141,10 @@ export default function Pricing({ isAnnual, onToggle }: {
                 </li>
               </ul>
             </CardContent>
-            <CardFooter>
-              {/* Button placeholder or logic if needed */}
+              <CardFooter>
+              <Button className="w-full"  variant={"outline"} onClick={() => handleClick('free')}>
+                {getButtonText("free") || "Get free"}
+              </Button>
             </CardFooter>
           </Card>
           {/* End Free Card */}
@@ -158,10 +157,7 @@ export default function Pricing({ isAnnual, onToggle }: {
                 <CardTitle className="text-xl">Basic</CardTitle>
               </div>
               <div className="space-y-2 text-sm text-muted-foreground">
-                <div className="flex justify-between">
-                  <span>Companies:</span>
-                  <span className="text-foreground font-medium">0</span>
-                </div>
+
                 <div className={`flex justify-between items-center ${isAnnual ? 'opacity-50' : 'font-bold'}`}>
                   <span>Monthly Price:</span>
                   <div className="flex items-center gap-1">
@@ -203,10 +199,7 @@ export default function Pricing({ isAnnual, onToggle }: {
                 <CardTitle className="text-xl">Pro</CardTitle>
               </div>
               <div className="space-y-2 text-sm text-muted-foreground">
-                <div className="flex justify-between">
-                  <span>Companies:</span>
-                  <span className="text-foreground font-medium">0</span>
-                </div>
+
                 <div className={`flex justify-between items-center ${isAnnual ? 'opacity-50' : 'font-bold'}`}>
                   <span>Monthly Price:</span>
                   <div className="flex items-center gap-1">
