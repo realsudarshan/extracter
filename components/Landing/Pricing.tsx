@@ -19,47 +19,47 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useUser } from "@clerk/clerk-react";
-import { CheckIcon, MinusIcon } from "lucide-react";
+import { CheckIcon, MinusIcon, Scan, Bot } from "lucide-react";
 import React from "react";
 import { toast } from "sonner";
 
 
 
 
-export default function Pricing({isAnnual,onToggle}:{
-  isAnnual:boolean;
-  onToggle:()=>void
+export default function Pricing({ isAnnual, onToggle }: {
+  isAnnual: boolean;
+  onToggle: () => void
 }) {
   const { isSignedIn, isLoaded } = useUser();
-  const handleClick=(plan:'free'|'basic'|'pro')=>{
-if(!isLoaded) return
-if(isSignedIn){
-switch(plan){
-  case "free":
-    
-    window.location.href="/manage-plan";
-    break;
+  const handleClick = (plan: 'free' | 'basic' | 'pro') => {
+    if (!isLoaded) return
+    if (isSignedIn) {
+      switch (plan) {
+        case "free":
 
-case "basic":
-   window.location.href="/manage-plan";
-   break;
-case "pro":
-   window.location.href="/manage-plan";
-   break;
-   default:
-    break;
+          window.location.href = "/manage-plan";
+          break;
 
+        case "basic":
+          window.location.href = "/manage-plan";
+          break;
+        case "pro":
+          window.location.href = "/manage-plan";
+          break;
+        default:
+          break;
+
+      }
+    }
+    else {
+      toast.error("Sign up to continue")
+    }
   }
-}
-else{
-  toast.error("Sign up to continue")
-}
-}
-  const getButtonText=(plan:'free'|'basic'|'pro'):string|null=>{
-if(plan==="free") return null;
-if(plan=="basic") return "Purchase"
-if(plan=="pro") return "Purchase"
-return null
+  const getButtonText = (plan: 'free' | 'basic' | 'pro'): string | null => {
+    if (plan === "free") return null;
+    if (plan == "basic") return "Purchase"
+    if (plan == "pro") return "Purchase"
+    return null
   }
   return (
     <>
@@ -80,7 +80,7 @@ return null
           <Label htmlFor="payment-schedule" className="me-3">
             Monthly
           </Label>
-          <Switch id="payment-schedule"  checked={isAnnual} onCheckedChange={onToggle} />
+          <Switch id="payment-schedule" checked={isAnnual} onCheckedChange={onToggle} />
           <Label htmlFor="payment-schedule" className="relative ms-3">
             Annual
             <span className="absolute -top-10 start-auto -end-28">
@@ -107,115 +107,147 @@ return null
         {/* End Switch */}
         {/* Grid */}
         <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:items-center">
-          {/* Card */}
-          <Card className="flex flex-col">
-            <CardHeader className="text-center pb-2">
-              <CardTitle className="mb-7">Free</CardTitle>
-              <span className="font-bold text-5xl">Free</span>
+          {/* Free Card */}
+          <Card className="flex flex-col h-full">
+            <CardHeader className="pb-2">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="h-4 w-4 rounded-full bg-gray-300" />
+                <CardTitle className="text-xl">Free</CardTitle>
+              </div>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="flex justify-between">
+                  <span>Companies:</span>
+                  <span className="text-foreground font-medium">0</span>
+                </div>
+                <div className={`flex justify-between items-center ${isAnnual ? 'opacity-50' : 'font-bold'}`}>
+                  <span>Monthly Price:</span>
+                  <div className="flex items-center gap-1">
+                    <span className="bg-blue-100 text-blue-600 rounded-full p-0.5 text-[10px] font-bold px-1.5">S</span>
+                    <span className="text-foreground font-medium">$0.00/mo</span>
+                  </div>
+                </div>
+                <div className={`flex justify-between items-center ${isAnnual ? 'font-bold' : 'opacity-50'}`}>
+                  <span>Yearly Price:</span>
+                  <div className="flex items-center gap-1">
+                    <span className="bg-blue-100 text-blue-600 rounded-full p-0.5 text-[10px] font-bold px-1.5">S</span>
+                    <span className="text-foreground font-medium">$0.00/yr</span>
+                  </div>
+                </div>
+              </div>
             </CardHeader>
-            <CardDescription className="text-center">
-              Forever free
-            </CardDescription>
+            <div className="border-t my-4" />
             <CardContent className="flex-1">
-              <ul className="mt-7 space-y-2.5 text-sm">
+              <ul className="space-y-2.5 text-sm">
                 <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">1 user</span>
-                </li>
-                <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">Plan features</span>
-                </li>
-                <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">Product support</span>
+                  <Scan className="flex-shrink-0 mt-0.5 h-4 w-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">2 Scans per month</span>
                 </li>
               </ul>
             </CardContent>
             <CardFooter>
-              
-                
-               
+              {/* Button placeholder or logic if needed */}
+            </CardFooter>
+          </Card>
+          {/* End Free Card */}
 
-            
-            </CardFooter>
-          </Card>
-          {/* End Card */}
-          {/* Card */}
-          <Card className="border-primary flex flex-col">
-            <CardHeader className="text-center pb-2">
-              <Badge className="uppercase w-max self-center mb-3">
-                Most popular
-              </Badge>
-              <CardTitle className="!mb-7">Basic</CardTitle>
-              <span className="font-bold text-5xl">{isAnnual?"$40":"$4"}</span>
+          {/* Basic Card */}
+          <Card className="flex flex-col h-full border-primary relative overflow-hidden">
+            <CardHeader className="pb-2">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="h-4 w-4 rounded-full bg-pink-500" />
+                <CardTitle className="text-xl">Basic</CardTitle>
+              </div>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="flex justify-between">
+                  <span>Companies:</span>
+                  <span className="text-foreground font-medium">0</span>
+                </div>
+                <div className={`flex justify-between items-center ${isAnnual ? 'opacity-50' : 'font-bold'}`}>
+                  <span>Monthly Price:</span>
+                  <div className="flex items-center gap-1">
+                    <span className="bg-blue-100 text-blue-600 rounded-full p-0.5 text-[10px] font-bold px-1.5">S</span>
+                    <span className="text-foreground font-medium">$4.00/mo</span>
+                  </div>
+                </div>
+                <div className={`flex justify-between items-center ${isAnnual ? 'font-bold' : 'opacity-50'}`}>
+                  <span>Yearly Price:</span>
+                  <div className="flex items-center gap-1">
+                    <span className="bg-blue-100 text-blue-600 rounded-full p-0.5 text-[10px] font-bold px-1.5">S</span>
+                    <span className="text-foreground font-medium">$40.00/yr</span>
+                  </div>
+                </div>
+              </div>
             </CardHeader>
-            <CardDescription className="text-center w-11/12 mx-auto">
-              All the basics for starting a new business
-            </CardDescription>
+            <div className="border-t my-4" />
             <CardContent className="flex-1">
-              <ul className="mt-7 space-y-2.5 text-sm">
+              <ul className="space-y-2.5 text-sm">
                 <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">2 user</span>
-                </li>
-                <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">Plan features</span>
-                </li>
-                <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">Product support</span>
+                  <Scan className="flex-shrink-0 mt-0.5 h-4 w-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">50 Scans per month</span>
                 </li>
               </ul>
             </CardContent>
             <CardFooter>
-              <Button className="w-full" onClick={()=>handleClick('basic')}>{
-getButtonText("pro")
-}</Button>
-            </CardFooter>
-          </Card>
-          {/* End Card */}
-          {/* Card */}
-          <Card className="flex flex-col">
-            <CardHeader className="text-center pb-2">
-              <CardTitle className="mb-7">Team</CardTitle>
-              <span className="font-bold text-5xl">{isAnnual?"$70":"$7"}</span>
-            </CardHeader>
-            <CardDescription className="text-center  w-11/12 mx-auto">
-              Everything you need for a growing business
-            </CardDescription>
-            <CardContent className="flex-1">
-              <ul className="mt-7 space-y-2.5 text-sm">
-                <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">5 user</span>
-                </li>
-                <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">Plan features</span>
-                </li>
-                <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">Product support</span>
-                </li>
-              </ul>
-            </CardContent>
-            <CardFooter>
-              <Button className="w-full" variant={"outline"} onClick={()=>handleClick("pro")}>
-                {getButtonText("pro")}
+              <Button className="w-full" onClick={() => handleClick('basic')}>
+                {getButtonText("basic") || "Purchase"}
               </Button>
             </CardFooter>
           </Card>
-          {/* End Card */}
-          {/* Card */}
-         
-          {/* End Card */}
+          {/* End Basic Card */}
+
+          {/* Pro Card */}
+          <Card className="flex flex-col h-full">
+            <CardHeader className="pb-2">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="h-4 w-4 rounded-full bg-yellow-400" />
+                <CardTitle className="text-xl">Pro</CardTitle>
+              </div>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="flex justify-between">
+                  <span>Companies:</span>
+                  <span className="text-foreground font-medium">0</span>
+                </div>
+                <div className={`flex justify-between items-center ${isAnnual ? 'opacity-50' : 'font-bold'}`}>
+                  <span>Monthly Price:</span>
+                  <div className="flex items-center gap-1">
+                    <span className="bg-blue-100 text-blue-600 rounded-full p-0.5 text-[10px] font-bold px-1.5">S</span>
+                    <span className="text-foreground font-medium">$7.00/mo</span>
+                  </div>
+                </div>
+                <div className={`flex justify-between items-center ${isAnnual ? 'font-bold' : 'opacity-50'}`}>
+                  <span>Yearly Price:</span>
+                  <div className="flex items-center gap-1">
+                    <span className="bg-blue-100 text-blue-600 rounded-full p-0.5 text-[10px] font-bold px-1.5">S</span>
+                    <span className="text-foreground font-medium">$70.00/yr</span>
+                  </div>
+                </div>
+              </div>
+            </CardHeader>
+            <div className="border-t my-4" />
+            <CardContent className="flex-1">
+              <ul className="space-y-2.5 text-sm">
+                <li className="flex space-x-2">
+                  <Scan className="flex-shrink-0 mt-0.5 h-4 w-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">300 Scans per month</span>
+                </li>
+                <li className="flex space-x-2">
+                  <Bot className="flex-shrink-0 mt-0.5 h-4 w-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">AI summaries</span>
+                </li>
+              </ul>
+            </CardContent>
+            <CardFooter>
+              <Button className="w-full" variant={"outline"} onClick={() => handleClick("pro")}>
+                {getButtonText("pro") || "Purchase"}
+              </Button>
+            </CardFooter>
+          </Card>
+          {/* End Pro Card */}
         </div>
         {/* End Grid */}
-      
-        
-        
+
+
+
       </div>
       {/* End Pricing */}
     </>

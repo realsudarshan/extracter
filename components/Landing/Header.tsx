@@ -1,16 +1,56 @@
 "use client";
 
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from '@clerk/nextjs';
 import { Shield } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 function Header() {
+  const { user } = useUser();
+  const [currentPlan, setCurrentPlan] = useState<string>('Free');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPlan = async () => {
+      if (!user?.id) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/get-user-plan');
+        if (response.ok) {
+          const data = await response.json();
+          setCurrentPlan(data.plan || 'Free');
+        }
+      } catch (error) {
+        console.error('Failed to fetch user plan:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPlan();
+  }, [user?.id]);
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const getPlanBadgeVariant = (plan: string) => {
+    switch (plan.toLowerCase()) {
+      case 'pro':
+      case 'team':
+        return 'default';
+      case 'basic':
+        return 'secondary';
+      default:
+        return 'outline';
     }
   };
 
@@ -41,6 +81,14 @@ function Header() {
 
         {/* Auth Buttons - Always Visible */}
         <div className="flex items-center gap-4">
+          <SignedIn>
+            {!loading && (
+              <Badge variant={getPlanBadgeVariant(currentPlan)} className="hidden sm:inline-flex">
+                {currentPlan}
+              </Badge>
+            )}
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
           <SignedOut>
             <SignInButton mode="modal">
               <Button variant="default" size="sm">
@@ -48,9 +96,6 @@ function Header() {
               </Button>
             </SignInButton>
           </SignedOut>
-          <SignedIn>
-            <UserButton afterSignOutUrl="/" />
-          </SignedIn>
         </div>
       </nav>
     </header>
