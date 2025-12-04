@@ -24,7 +24,15 @@ export default function Footer() {
             >
               shadcn/ui
             </Link>
-            .
+            . Built by{" "}
+            <Link
+              href="https://github.com/realsudarshan"
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium underline underline-offset-4"
+            >
+              realsudarshan
+            </Link>
           </p>
         </div>
         <div className="flex flex-col items-center gap-4 md:flex-row md:gap-6">

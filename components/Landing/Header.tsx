@@ -1,14 +1,16 @@
 "use client";
 
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from '@clerk/nextjs';
 import { Shield } from 'lucide-react';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 function Header() {
   const { user } = useUser();
+  const pathname = usePathname();
   const [currentPlan, setCurrentPlan] = useState<string>('Free');
   const [loading, setLoading] = useState(true);
 
@@ -67,18 +69,41 @@ function Header() {
 
         {/* Navigation Links - Always Visible */}
         <div className="flex items-center gap-6 md:gap-8">
-          <button
-            onClick={() => scrollToSection('features')}
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Features
-          </button>
-          <button
-            onClick={() => scrollToSection('pricing')}
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Pricing
-          </button>
+          <SignedIn>
+            {(pathname.startsWith('/dashboard') || pathname.startsWith('/analytics')) && (
+              <>
+                <Link
+                  href="/dashboard"
+                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  href="/analytics"
+                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  Analytics
+                </Link>
+              </>
+            )}
+          </SignedIn>
+
+          {pathname === '/' && (
+            <>
+              <button
+                onClick={() => scrollToSection('features')}
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Features
+              </button>
+              <button
+                onClick={() => scrollToSection('pricing')}
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Pricing
+              </button>
+            </>
+          )}
         </div>
 
         {/* Auth Buttons - Always Visible */}
