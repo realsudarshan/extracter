@@ -2,13 +2,14 @@
 
 import { useSchematicEntitlement } from "@schematichq/schematic-react";
 import { Scan } from "lucide-react";
+import Link from "next/link";
 
 export default function CreditDisplay() {
     const {
         featureUsageExceeded,
         featureAllocation,
         featureUsage,
-    } = useSchematicEntitlement("scans") ;
+    } = useSchematicEntitlement("scans");
 
     if (featureAllocation === undefined) {
         return null; // Loading state
@@ -47,12 +48,12 @@ export default function CreditDisplay() {
                     </p>
                 </div>
                 {featureUsageExceeded && (
-                    <a
+                    <Link
                         href="/#pricing"
                         className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                     >
                         Upgrade Plan
-                    </a>
+                    </Link>
                 )}
             </div>
         </div>
